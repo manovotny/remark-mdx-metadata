@@ -28,8 +28,17 @@
     "scripts": {
         "lint": "eslint . --ext .json --ext .js",
         "prettier": "prettier --write \"**/*.{js,md,yml}\"",
-        "update": "node ./index.js",
+        "start": "node ./index.js",
         "test": "yarn lint"
+    },
+    "dependencies": {
+        "@babel/generator": "7.3.0",
+        "@babel/parser": "7.3.1",
+        "@babel/template": "7.2.2",
+        "@babel/traverse": "7.2.3",
+        "@babel/types": "7.3.0",
+        "remark": "10.0.1",
+        "to-vfile": "5.0.2"
     },
     "devDependencies": {
         "eslint": "4.19.1",
@@ -40,8 +49,5 @@
     },
     "peerDependencies": {
         "prettier": "^1.15.3"
-    },
-    "dependencies": {
-        "jscodeshift": "0.6.2"
     }
 }
