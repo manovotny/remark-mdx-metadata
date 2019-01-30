@@ -1,5 +1,5 @@
 {
-    "name": "prettier-plugin-update-mdx-meta",
+    "name": "remark-mdx-metadata",
     "description": "TODO",
     "version": "0.0.0",
     "author": {
@@ -10,7 +10,7 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/manovotny/prettier-plugin-update-mdx-meta.git"
+        "url": "git+https://github.com/manovotny/remark-mdx-metadata.git"
     },
     "keywords": [
         "edit",
@@ -28,7 +28,7 @@
     "scripts": {
         "lint": "eslint . --ext .json --ext .js",
         "prettier": "prettier --write \"**/*.{js,md,yml}\"",
-        "start": "node ./index.js",
+        "start": "node ./example.js",
         "test": "yarn lint"
     },
     "dependencies": {
