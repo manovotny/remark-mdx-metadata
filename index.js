@@ -29,7 +29,7 @@ const isMeta = (child) => {
     return metaFound;
 };
 
-const parseChidlren = (tree) => {
+const parseChildren = (tree) => {
     let importsIndex = -1;
     let meta;
 
@@ -101,21 +101,21 @@ const insertMetaAfterImports = (children, meta, index) => [
     ...children.slice(index + 1)
 ];
 
-const insertMetaAtTopMdx = (children, meta) => [meta, ...children];
+const insertMetaAtTopOfFile = (children, meta) => [meta, ...children];
 
 const plugin = () => {
     const transformer = (tree) => {
-        let {importsIndex, meta} = parseChidlren(tree);
+        let {importsIndex, meta} = parseChildren(tree);
 
         if (meta) {
-            meta = updateMeta(meta);
+            updateMeta(meta);
         } else {
             meta = createMeta();
 
             if (hasImports(importsIndex)) {
                 tree.children = insertMetaAfterImports(tree.children, meta, importsIndex);
             } else {
-                tree.children = insertMetaAtTopMdx(tree.children, meta);
+                tree.children = insertMetaAtTopOfFile(tree.children, meta);
             }
         }
     };
