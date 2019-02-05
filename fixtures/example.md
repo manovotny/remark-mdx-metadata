@@ -1,7 +1,7 @@
 import abc from './abc.mdx'
 
 export const meta = {
-xyz: 'xyz'
+abc: '123'
 }
 
 # With Imports With Meta

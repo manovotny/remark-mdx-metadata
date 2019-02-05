@@ -1,14 +1,12 @@
 const {parse} = require('@babel/parser');
 const generate = require('@babel/generator').default;
 const traverse = require('@babel/traverse').default;
-const template = require('@babel/template').default;
-const t = require('@babel/types');
+const stringifyObject = require('stringify-object');
 
 const isImport = (child) => child.type === 'import';
-
 const hasImports = (index) => index > -1;
-
 const isExport = (child) => child.type === 'export';
+const stringifyPassedMeta = (meta) => `const passedMeta = ${stringifyObject(meta)}`;
 
 const isMeta = (child) => {
     let metaFound = false;
@@ -21,6 +19,7 @@ const isMeta = (child) => {
         VariableDeclarator: (path) => {
             if (path.node.id.name === 'meta') {
                 metaFound = true;
+
                 return;
             }
         }
@@ -29,95 +28,83 @@ const isMeta = (child) => {
     return metaFound;
 };
 
-const parseChildren = (tree) => {
-    let importsIndex = -1;
-    let meta;
+const getOrCreateExistingMetaIndex = (children) => {
+    let importsIndex = -1,
+        metaIndex = -1;
 
-    tree.children.forEach((child, index) => {
+    children.forEach((child, index) => {
         if (isImport(child)) {
             importsIndex = index;
         } else if (isExport(child) && isMeta(child)) {
-            meta = child;
+            metaIndex = index;
         }
     });
 
-    return {
-        importsIndex,
-        meta
-    };
+    if (metaIndex === -1) {
+        const meta = {
+            default: false,
+            type: 'export',
+            value: 'export const meta = {}'
+        };
+
+        metaIndex = hasImports(importsIndex) ? importsIndex + 1 : 0;
+        children.splice(metaIndex, 0, meta);
+    }
+
+    return metaIndex;
 };
 
-const updateMeta = (meta) => {
-    const ast = parse(meta.value, {
-        sourceType: 'module'
+const mergeMeta = (existingMeta, passedMeta) => {
+    const passedAst = parse(passedMeta, {sourceType: 'module'});
+    const existingAst = parse(existingMeta, {sourceType: 'module'});
+    const passedProperties = [];
+
+    traverse(passedAst, {
+        ObjectExpression: (path) => {
+            path.node.properties.forEach((property) => {
+                passedProperties.push(property);
+            });
+        }
     });
 
-    traverse(ast, {
+    traverse(existingAst, {
         ObjectExpression: (path) => {
-            let lastModifiedDateUpdated = false;
+            const existingProperties = path.node.properties;
+            const mergedProperties = [...existingProperties, ...passedProperties];
+            const properties = [];
 
-            path.node.properties.forEach((property) => {
-                if (property.key.name === 'lastModifiedDate') {
-                    property.value.value = 'UPDATED';
-                    lastModifiedDateUpdated = true;
+            mergedProperties.forEach((mergedProperty) => {
+                const foundIndex = properties.findIndex(
+                    (property) => property && property.key.name === mergedProperty.key.name
+                );
+
+                if (foundIndex > -1) {
+                    properties[foundIndex] = mergedProperty;
+                } else {
+                    properties.push(mergedProperty);
                 }
             });
 
-            if (!lastModifiedDateUpdated) {
-                const property = t.objectProperty(t.identifier('lastModifiedDate'), t.stringLiteral('ADDED'));
-
-                path.node.properties.push(property);
-            }
+            // eslint-disable-next-line no-param-reassign
+            path.node.properties = properties;
         }
     });
 
-    return {
-        ...meta,
-        value: generate(ast).code
-    };
+    return generate(existingAst).code;
 };
 
-const createMeta = () => {
-    const buildRequire = template(`
-        export const meta = {
-            lastModifiedDate: LAST_MODIFIED_DATE
-        };
-    `);
-
-    const ast = buildRequire({
-        LAST_MODIFIED_DATE: t.stringLiteral('CREATED')
-    });
-
-    return {
-        type: 'export',
-        default: false,
-        value: generate(ast).code
-    };
-};
-
-const insertMetaAfterImports = (children, meta, index) => [
-    ...children.slice(0, index + 1),
-    meta,
-    ...children.slice(index + 1)
-];
-
-const insertMetaAtTopOfFile = (children, meta) => [meta, ...children];
-
-const plugin = () => {
+const plugin = (options = {}) => {
     const transformer = (tree) => {
-        let {importsIndex, meta} = parseChildren(tree);
-
-        if (meta) {
-            updateMeta(meta);
-        } else {
-            meta = createMeta();
-
-            if (hasImports(importsIndex)) {
-                tree.children = insertMetaAfterImports(tree.children, meta, importsIndex);
-            } else {
-                tree.children = insertMetaAtTopOfFile(tree.children, meta);
-            }
+        if (!options.meta) {
+            return;
         }
+
+        const children = tree.children;
+        const metaIndex = getOrCreateExistingMetaIndex(children);
+        const existingMeta = children[metaIndex].value;
+        const passedMeta = stringifyPassedMeta(options.meta);
+
+        children[metaIndex].value = mergeMeta(existingMeta, passedMeta);
     };
 
     return transformer;
