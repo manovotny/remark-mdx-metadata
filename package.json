@@ -1,7 +1,7 @@
 {
     "name": "remark-mdx-metadata",
     "description": "Remark transformer for modifying MDX metadata.",
-    "version": "0.0.0",
+    "version": "1.0.0-beta.1",
     "author": {
         "name": "Michael Novotny",
         "email": "manovotny@gmail.com",
