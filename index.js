@@ -62,16 +62,16 @@ const mergeMeta = (existingMeta, passedMeta) => {
     const passedProperties = [];
 
     traverse(passedAst, {
-        ObjectExpression: (path) => {
-            path.node.properties.forEach((property) => {
+        VariableDeclarator: (path) => {
+            path.node.init.properties.forEach((property) => {
                 passedProperties.push(property);
             });
         }
     });
 
     traverse(existingAst, {
-        ObjectExpression: (path) => {
-            const existingProperties = path.node.properties;
+        VariableDeclarator: (path) => {
+            const existingProperties = path.node.init.properties;
             const mergedProperties = [...existingProperties, ...passedProperties];
             const properties = [];
 
@@ -88,7 +88,7 @@ const mergeMeta = (existingMeta, passedMeta) => {
             });
 
             // eslint-disable-next-line no-param-reassign
-            path.node.properties = properties;
+            path.node.init.properties = properties;
         }
     });
 
