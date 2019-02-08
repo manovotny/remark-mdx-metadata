@@ -2,7 +2,6 @@ const vfile = require('to-vfile');
 const remark = require('remark');
 
 const mdx = require('../remark-mdx');
-
 const plugin = require('../index');
 
 (async () => {
