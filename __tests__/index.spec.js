@@ -106,3 +106,18 @@ test('should insert at top of file when there is no imports', async () => {
 
     expect(wrap(result)).toMatchSnapshot();
 });
+
+test('should handle complex meta', async () => {
+    const options = {
+        meta: {
+            complex: {
+                nested: {
+                    prop: [123, '456']
+                }
+            }
+        }
+    };
+    const result = await processFixture('existing-meta', options);
+
+    expect(wrap(result)).toMatchSnapshot();
+});

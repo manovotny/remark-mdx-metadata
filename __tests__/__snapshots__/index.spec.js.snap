@@ -12,6 +12,22 @@ Content.
 
 `;
 
+exports[`should handle complex meta 1`] = `
+export const meta = {
+  existingProp: 'existing value',
+  complex: {
+    nested: {
+      prop: [123, '456']
+    }
+  }
+};
+
+# Title
+
+Content.
+
+`;
+
 exports[`should insert at top of file when there is no imports 1`] = `
 export const meta = {
   prop: 'value'

@@ -6,13 +6,12 @@ const mdx = require('./remark-mdx');
 const plugin = require('./index');
 
 (async () => {
-    const file = await vfile.read('./__tests__/fixtures/export-default.mdx');
+    const file = await vfile.read('./__tests__/fixtures/existing-meta.mdx');
     const updated = await remark()
         .use(mdx)
         .use(plugin, {
             meta: {
-                abc: 'updated',
-                new: 'prop'
+                existingProp: 'updated value'
             }
         })
         .process(file);
