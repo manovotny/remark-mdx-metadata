@@ -1,6 +1,6 @@
 {
     "name": "remark-mdx-metadata",
-    "description": "Remark transformer to modify MDX metadata.",
+    "description": "Remark transformer for modifying MDX metadata.",
     "version": "0.0.0",
     "author": {
         "name": "Michael Novotny",
@@ -29,9 +29,9 @@
     "main": "index.js",
     "scripts": {
         "coverage": "jest --coverage",
+        "example": "node example/example.js",
         "lint": "eslint . --ext .json --ext .js",
         "prettier": "prettier --write \"**/*.{js,md,yml}\"",
-        "start": "node ./example.js",
         "test": "yarn lint && yarn coverage",
         "unit": "jest"
     },
