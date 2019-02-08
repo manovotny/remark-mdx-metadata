@@ -3,6 +3,10 @@ const generate = require('@babel/generator').default;
 const traverse = require('@babel/traverse').default;
 const stringifyObject = require('stringify-object');
 
+const parseOptions = {
+    plugins: ['jsx'],
+    sourceType: 'module'
+};
 const isImport = (child) => child.type === 'import';
 const hasImports = (index) => index > -1;
 const isExport = (child) => child.type === 'export';
@@ -11,9 +15,7 @@ const stringifyPassedMeta = (meta) => `const passedMeta = ${stringifyObject(meta
 const isMeta = (child) => {
     let metaFound = false;
 
-    const ast = parse(child.value, {
-        sourceType: 'module'
-    });
+    const ast = parse(child.value, parseOptions);
 
     traverse(ast, {
         VariableDeclarator: (path) => {
@@ -55,8 +57,8 @@ const getOrCreateExistingMetaIndex = (children) => {
 };
 
 const mergeMeta = (existingMeta, passedMeta) => {
-    const passedAst = parse(passedMeta, {sourceType: 'module'});
-    const existingAst = parse(existingMeta, {sourceType: 'module'});
+    const passedAst = parse(passedMeta, parseOptions);
+    const existingAst = parse(existingMeta, parseOptions);
     const passedProperties = [];
 
     traverse(passedAst, {
@@ -95,7 +97,7 @@ const mergeMeta = (existingMeta, passedMeta) => {
 
 const plugin = (options = {}) => {
     const transformer = (tree) => {
-        if (!options.meta) {
+        if (!options || !options.meta || Object.keys(options.meta).length === 0) {
             return;
         }
 

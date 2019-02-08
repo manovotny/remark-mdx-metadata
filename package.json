@@ -26,10 +26,12 @@
     },
     "main": "index.js",
     "scripts": {
+        "coverage": "jest --coverage",
         "lint": "eslint . --ext .json --ext .js",
         "prettier": "prettier --write \"**/*.{js,md,yml}\"",
         "start": "node ./example.js",
-        "test": "yarn lint"
+        "test": "yarn lint && yarn coverage",
+        "unit": "jest"
     },
     "dependencies": {
         "@babel/generator": "7.3.0",
@@ -43,6 +45,8 @@
         "eslint": "4.19.1",
         "eslint-config-get-off-my-lawn-prettier": "1.0.0",
         "husky": "1.3.1",
+        "jest": "24.1.0",
+        "jest-snapshot-serializer-raw": "1.1.0",
         "lint-staged": "8.1.0",
         "prettier": "1.15.3"
     },

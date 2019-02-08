@@ -6,7 +6,7 @@ const mdx = require('./remark-mdx');
 const plugin = require('./index');
 
 (async () => {
-    const file = await vfile.read('./fixtures/example.md');
+    const file = await vfile.read('./__tests__/fixtures/export-default.mdx');
     const updated = await remark()
         .use(mdx)
         .use(plugin, {

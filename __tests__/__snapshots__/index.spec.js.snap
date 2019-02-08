@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should add to existing meta 1`] = `
+export const meta = {
+  existingProp: 'existing value',
+  addProp: 'value'
+};
+
+# Title
+
+Content.
+
+`;
+
+exports[`should insert at top of file when there is no imports 1`] = `
+export const meta = {
+  prop: 'value'
+};
+
+# Title
+
+Content.
+
+`;
+
+exports[`should insert below import 1`] = `
+import something from 'something';
+
+export const meta = {
+  prop: 'value'
+};
+
+# Title
+
+Content.
+
+`;
+
+exports[`should insert below imports 1`] = `
+import something from 'something';
+
+import somethingElse from 'something-else';
+
+export const meta = {
+  prop: 'value'
+};
+
+# Title
+
+Content.
+
+`;
+
+exports[`should not modify export default 1`] = `
+import Component from 'Component';
+
+export const meta = {
+  existingProp: 'existing value',
+  newProp: 'value'
+};
+
+export default ({children}) => <Component>{children}</Component>;
+
+# Title
+
+Content.
+
+`;
+
+exports[`should not modify file with empty meta 1`] = `
+# Title
+
+Content.
+
+`;
+
+exports[`should not modify file with empty options 1`] = `
+# Title
+
+Content.
+
+`;
+
+exports[`should not modify file with no options 1`] = `
+# Title
+
+Content.
+
+`;
+
+exports[`should update existing meta 1`] = `
+export const meta = {
+  existingProp: 'updated value'
+};
+
+# Title
+
+Content.
+
+`;
