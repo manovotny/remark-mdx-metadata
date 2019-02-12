@@ -2,9 +2,9 @@ const {join} = require('path');
 
 const {wrap} = require('jest-snapshot-serializer-raw');
 const remark = require('remark');
+const mdx = require('remark-mdx');
 const vfile = require('to-vfile');
 
-const mdx = require('../remark-mdx');
 const plugin = require('../index');
 
 const processFixture = async (name, options) => {

@@ -9,18 +9,18 @@ This is a [remark](https://remark.js.org/) plugin for externally modifying an MD
 ### NPM
 
 ```
-$ npm i remark-mdx-markdown
+$ npm i remark-mdx-metadata
 ```
 
 ### Yarn
 
 ```
-$ yarn add remark-mdx-markdown
+$ yarn add remark-mdx-metadata
 ```
 
 ## Usage
 
-> :warning: This plugin requires [remark-mdx](https://github.com/mdx-js/mdx/tree/master/packages/remark-mdx), which hasn't been released yet (but I've been told it's 🔜). Until then, `remark-mdx-markdown` contains a copy of it internally, so you'll need to reference it that way when importing it.
+> This plugin requires [remark-mdx](https://github.com/mdx-js/mdx/tree/master/packages/remark-mdx) to parse mdx correctly,
 
 Say we have the following file, `example.mdx`:
 
@@ -39,7 +39,7 @@ And our script, `example.js`, looks as follows:
 ```js
 const vfile = require('to-vfile');
 const remark = require('remark');
-const mdx = require('remark-mdx-metadata/remark-mdx');
+const mdx = require('remark-mdx');
 const mdxMetadata = require('remark-mdx-metadata');
 
 (async () => {
