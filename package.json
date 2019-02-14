@@ -51,6 +51,7 @@
         "prettier": "1.16.4",
         "remark": "10.0.1",
         "remark-mdx": "0.17.2",
+        "remark-stringify": "6.0.4",
         "to-vfile": "5.0.2"
     },
     "peerDependencies": {
