@@ -21,7 +21,6 @@ const isMeta = (child) => {
         VariableDeclarator: (path) => {
             if (path.node.id.name === 'meta') {
                 metaFound = true;
-
                 return;
             }
         }
