@@ -70,6 +70,6 @@
         "to-vfile": "5.0.2"
     },
     "peerDependencies": {
-        "remark-mdx": "^0.17.2"
+        "remark-mdx": "^0.20.3"
     }
 }
