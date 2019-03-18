@@ -31,9 +31,20 @@
         "coverage": "jest --coverage",
         "example": "node example/example.js",
         "lint": "eslint . --ext .json --ext .js",
-        "prettier": "prettier --write \"**/*.{js,md,yml}\"",
+        "prettier": "prettier --write \"**/*.{js,json,md,mdx,yml}\"",
         "test": "yarn lint && yarn coverage",
         "unit": "jest"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{js,json,md,mdx,yml}": [
+            "prettier --write",
+            "git add"
+        ]
     },
     "dependencies": {
         "@babel/generator": "7.3.2",
